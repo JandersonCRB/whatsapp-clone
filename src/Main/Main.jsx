@@ -41,7 +41,16 @@ const chats = [
 ]
 
 class Main extends Component {
+	state = {
+		currentChat: null,
+	}
+
+	active = index => {
+		this.setState({ currentChat: index });
+	}
+
 	render() {
+		const { currentChat } = this.state;
 		return (
 			<Grid container style={{ maxHeight: '100vh' }}>
 				<Grid container item xs={4} style={{ height: '100%' }}>
@@ -70,15 +79,20 @@ class Main extends Component {
 						</label>
 					</Grid>
 					<Grid container direction="row" style={{ maxHeight: 'calc(100vh - 108px)', overflow: 'auto' }}>
-						{chats.map(chat => (
-							<ButtonBase disableRipple component={Grid} container direction="row" wrap="nowrap" alignItems="center" style={{ height: 72, maxWidth: '100%', overflow: 'hidden' }}>
+						{chats.map((chat, index) => (
+							<ButtonBase key={index} onClick={_ => this.active(index)} disableRipple component={Grid} container direction="row" wrap="nowrap" alignItems="center" style={{ height: 72, maxWidth: '100%', overflow: 'hidden' }}>
 								<div style={{ width: 68, paddingLeft: 13, paddingRight: 15 }}>
 									<Avatar src={chat.img} />
 								</div>
-								<Grid container direction="row" style={{ height: '100%', maxWidth: 'calc(100% - 68px)', borderTop: '1px solid #f2f2f2', paddingRight: 15, paddingTop: 10 }}>
+								<Grid container direction="column" style={{ height: '100%', maxWidth: 'calc(100% - 68px)', borderTop: '1px solid #f2f2f2', paddingRight: 15, paddingTop: 10 }}>
 									<Grid container direction="row">
-										<Typography noWrap style={{ fontSize: 15, fontWeight: 400 }}>
+										<Typography noWrap style={{ fontSize: 16, fontWeight: 500 }}>
 											{chat.name}
+										</Typography>
+									</Grid>
+									<Grid container direction="row" style={{ marginTop: 3 }}>
+										<Typography noWrap style={{ fontSize: 14, fontWeight: 300, opacity: 0.6 }}>
+											{chat.lastMsg}
 										</Typography>
 									</Grid>
 								</Grid>
@@ -88,6 +102,7 @@ class Main extends Component {
 				</Grid>
 				<Grid item xs={8} style={{ height: '100vh', backgroundColor: 'purple'}}>
 					ola
+					{currentChat}
 				</Grid>
 			</Grid>
 		);
